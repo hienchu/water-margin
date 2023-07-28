@@ -37,7 +37,7 @@ const controls = new OrbitControls(camera, renderer.domElement);
 controls.addEventListener("change", render);
 camera.position.z = 1;
 
-scene.add(new THREE.AmbientLight());
+scene.add(new THREE.AmbientLight(0xffffff, 3));
 
 const gltfLoader = new GLTFLoader();
 gltfLoader.load("model.gltf", (gltf) => {
