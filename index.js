@@ -62,18 +62,23 @@ function renderBySize(options = {}) {
   render();
 }
 
-document.querySelectorAll(".imgs img").forEach((item, index) => {
-  item.addEventListener("click", async () => {
+const fragment = document.createDocumentFragment();
+for (let index = 1; index <= 108; index++) {
+  const img = document.createElement("img");
+  img.src = `./imgs/${index}.jpg`;
+  img.addEventListener("click", async () => {
+    selectId = index;
     const mesh = scene.getObjectByName("model");
     const material = mesh.material;
-    selectId = index + 1;
     const texture = await textureLoader.loadAsync(`./imgs/${selectId}.jpg`);
     texture.flipY = false;
     texture.colorSpace = THREE.SRGBColorSpace;
     material.map = texture;
     render();
   });
-});
+  fragment.appendChild(img);
+}
+document.querySelector(".imgs").appendChild(fragment);
 
 document.querySelector(".button.preview").addEventListener("click", () => {
   container.classList.toggle("hidden");
