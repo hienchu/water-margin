@@ -1,11 +1,9 @@
 <script lang="ts">
 import { defineComponent, ref } from 'vue'
-import DemoTools from './demo-tools.vue'
 
 export default defineComponent({
   name: 'App',
   components: {
-    DemoTools,
   },
   setup() {
     const scrollContainer = ref(null)
@@ -15,13 +13,13 @@ export default defineComponent({
   },
   data() {
     return {
-      columnWidth: [128, 128, 128, 128, 128] as [number, ...number[]],
+      columnWidth: 128,
       gap: 4,
       items: [] as number[],
       rtl: false,
       useScrollContainer: false,
       minColumns: 2,
-      maxColumns: 5,
+      maxColumns: 8,
     }
   },
   mounted() {
@@ -45,16 +43,12 @@ export default defineComponent({
       this.items.splice(index, 1);
       this.items = [...this.items];
     },
-    // Define a method that returns the image path based on the number
-    getImagePath(x: number) {
-      return `imgs/${x}.jpg`;
-    },
   },
 })
 </script>
 
 <template>
-  <div id="app">
+  <div>
     <main
       ref="scrollContainer"
       :class="{ 'scroll-container': useScrollContainer }"
@@ -69,10 +63,12 @@ export default defineComponent({
         :max-columns="maxColumns"
       >
         <template #default="{ item, column, row, index }">
-          <img
-            :src="`./imgs/${item}.jpg`"
-            :alt="`Image ${item}`"
-          />
+          <div class="thumbnail">
+            <img
+              :src="`./imgs/${item}.jpg`"
+              :alt="`Image ${item}`"
+            />
+          </div>
         </template>
       </MasonryWall>
     </main>
@@ -212,10 +208,18 @@ button:hover {
 .scroll-container {
   overflow-y: auto;
 }
-img {
-  width: 100%; 
-  height: auto;
-  object-fit: cover;
-  object-position: left;
+
+.thumbnail {
+    position: relative;
+    min-height: 150px;
 }
+
+.thumbnail img {
+  position: absolute;
+  clip-path: inset(0 55% 0 0); /* Display the left half */
+  /* Other styles (e.g., height, width) as needed */
+  height: 100%;
+  width: 100%;
+}
+
 </style>
